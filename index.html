@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Tracker · SG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-vibrant">
+
+  <!-- Animated background orbs -->
+  <div class="bg-canvas">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+
+  <!-- Theme switcher -->
+  <div class="theme-switcher">
+    <button class="theme-dot vibrant active" data-theme="vibrant" title="Bold & Vibrant"></button>
+    <button class="theme-dot dark"           data-theme="dark"    title="Dark & Sleek"></button>
+    <button class="theme-dot light"          data-theme="light"   title="Light & Minimal"></button>
+  </div>
+
+  <!-- ═══════════ UPLOAD SCREEN ═══════════ -->
+  <section id="upload-screen" class="screen active">
+    <div class="upload-container">
+
+      <div class="brand">
+        <span class="brand-icon">💰</span>
+        <h1 class="brand-name">Finance <span class="g-text">Tracker</span></h1>
+        <p class="brand-sub">Know exactly where your money goes, every month.</p>
+      </div>
+
+      <div class="drop-zone" id="drop-zone">
+        <svg class="upload-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 42V20M32 20L23 29M32 20L41 29" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 44H52" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <rect x="3" y="3" width="58" height="58" rx="14" stroke="currentColor" stroke-width="2" stroke-dasharray="5 4"/>
+        </svg>
+        <p class="drop-primary">Drop your DBS statement(s) here</p>
+        <p class="drop-secondary">Credit card PDF &amp; / or bank account PDF</p>
+        <p class="drop-multi">✦ You can upload <strong>both files at once</strong></p>
+        <button class="btn-browse" id="btn-browse">Browse Files</button>
+        <input type="file" id="file-input" accept=".pdf" multiple hidden>
+      </div>
+
+      <button class="btn-sample" id="btn-sample">✦ Try with sample data</button>
+      <p class="privacy-note">🔒 All processing happens locally — your data never leaves this browser.</p>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ PROCESSING SCREEN ═══════════ -->
+  <section id="processing-screen" class="screen">
+    <div class="processing-wrap">
+      <div class="processing-ring"><div class="ring-inner"></div></div>
+      <p class="processing-label" id="processing-label">Reading your statement…</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ DASHBOARD SCREEN ═══════════ -->
+  <section id="dashboard-screen" class="screen">
+
+    <!-- Sticky header -->
+    <header class="dash-header">
+      <div class="dash-header-left">
+        <span class="brand-small">💰 Finance Tracker</span>
+        <div class="month-sel">
+          <button class="mnav" id="month-prev" title="Previous month">‹</button>
+          <span class="mlabel" id="month-label">—</span>
+          <button class="mnav" id="month-next" title="Next month">›</button>
+        </div>
+      </div>
+      <button class="btn-reupload" id="btn-reupload">↑ Upload New</button>
+    </header>
+
+    <!-- Hero total -->
+    <div class="hero-section">
+      <p class="hero-label">Total Expenses</p>
+      <p class="hero-amount" id="hero-amount">S$0.00</p>
+      <p class="hero-sub"   id="hero-sub"></p>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="stat-grid">
+
+      <div class="stat-card">
+        <p class="s-label">Biggest Category</p>
+        <p class="s-icon" id="stat-biggest-icon">—</p>
+        <p class="s-val"  id="stat-biggest-val">S$0</p>
+        <p class="s-sub"  id="stat-biggest-name"></p>
+      </div>
+
+      <div class="stat-card">
+        <p class="s-label">Daily Average</p>
+        <p class="s-icon">📅</p>
+        <p class="s-val" id="stat-daily-val">S$0</p>
+        <p class="s-sub">per day this month</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="s-label">Transactions</p>
+        <p class="s-icon">🧾</p>
+        <p class="s-val" id="stat-count-val">0</p>
+        <p class="s-sub">expense entries</p>
+      </div>
+
+      <div class="stat-card">
+        <p class="s-label">PayNow / PayLah</p>
+        <p class="s-icon">📱</p>
+        <div class="paynow-split">
+          <div class="paynow-col">
+            <span class="paynow-dir">Sent</span>
+            <p class="s-paynow-out" id="stat-paynow-out">S$0</p>
+          </div>
+          <div class="paynow-col">
+            <span class="paynow-dir">Received</span>
+            <p class="s-paynow-in" id="stat-paynow-in">S$0</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Donut + Category list -->
+    <div class="main-grid">
+
+      <div class="card">
+        <h3 class="card-title">Spending Breakdown</h3>
+        <div class="donut-wrap">
+          <canvas id="donut-chart"></canvas>
+          <div class="donut-center">
+            <p class="donut-center-lbl" id="donut-center-lbl">Total Spent</p>
+            <p class="donut-center-val" id="donut-center-val">—</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Categories <span style="font-weight:400;color:var(--t3)">(click to expand)</span></h3>
+        <div class="cat-list" id="category-list"></div>
+      </div>
+
+    </div>
+
+    <!-- Daily bar chart -->
+    <div class="card bar-card">
+      <h3 class="card-title">Daily Spending</h3>
+      <div class="bar-wrap">
+        <canvas id="bar-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Transaction list -->
+    <div class="card txn-card">
+      <div class="txn-header">
+        <h3 class="card-title" style="margin-bottom:0">All Transactions</h3>
+        <div class="txn-filters" id="txn-filters"></div>
+      </div>
+      <div id="txn-list"></div>
+    </div>
+
+  </section><!-- /dashboard -->
+
+  <!-- ═══════════ SCRIPTS ═══════════ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="categorizer.js"></script>
+  <script src="parser.js"></script>
+  <script src="app.js"></script>
+
+
+</body>
+</html>
